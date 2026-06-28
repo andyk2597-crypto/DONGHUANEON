@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DonghuaNeon - Next-Gen Premium Hub</title>
+    <style>
+        /* LUXURY DARK THEME - CORE SYSTEM */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #030407; color: #f3f4f6; overflow-x: hidden; }
+
+        /* --- SULTAN NEON AURORA ANIMATION --- */
+        @keyframes neonGlowPulse {
+            0% { color: #00f2ff; text-shadow: 0 0 15px rgba(0, 242, 255, 0.6); }
+            50% { color: #9d4edd; text-shadow: 0 0 20px rgba(157, 78, 221, 0.6); }
+            100% { color: #00f2ff; text-shadow: 0 0 15px rgba(0, 242, 255, 0.6); }
+        }
+
+        /* HEADER BRANDING MODERN */
+        header { 
+            background: rgba(11, 13, 22, 0.8); 
+            backdrop-filter: blur(12px);
+            padding: 20px 40px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header h1 { 
+            font-size: 26px; 
+            font-weight: 900; 
+            letter-spacing: 3px; 
+            animation: neonGlowPulse 6s infinite ease-in-out;
+        }
+        .badge-live { 
+            background: rgba(0, 242, 255, 0.06); 
+            color: #00f2ff; 
+            padding: 6px 16px; 
+            border-radius: 30px; 
+            font-size: 11px; 
+            font-weight: bold; 
+            border: 1px solid rgba(0, 242, 255, 0.3); 
+            text-shadow: 0 0 8px rgba(0, 242, 255, 0.4); 
+        }
+
+        /* MAIN WRAPPER COMPONENT */
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 28px;
+            max-width: 1700px;
+            margin: 0 auto;
+            padding: 28px;
+        }
+
+        main { display: flex; flex-direction: column; gap: 28px; width: 100%; overflow: hidden; }
+        
+        /* PREMIUM HERO FEATURED SLIDER (BOTTOM LIST) */
+        .featured-slider-panel { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .slider-container {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 8px;
+        }
+        .slider-container::-webkit-scrollbar { height: 4px; }
+        .slider-container::-webkit-scrollbar-thumb { background: #1a1f30; border-radius: 10px; }
+        .slider-card {
+            flex: 0 0 420px;
+            height: 180px;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 20%, rgba(11,13,22,1) 100%);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: 0.3s;
+        }
+        .slider-card:hover { border-color: #9d4edd; transform: scale(1.01); box-shadow: 0 10px 20px rgba(157, 78, 221, 0.15); }
+        .slider-card img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.65; transition: 0.5s; }
+        .slider-card:hover img { transform: scale(1.05); opacity: 0.8; }
+        .slider-card .meta { position: absolute; bottom: 0; left: 0; padding: 20px; width: 100%; }
+        .slider-card .meta h4 { font-size: 16px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); margin-bottom: 4px; }
+        .slider-card .meta p { font-size: 12px; color: #00f2ff; font-weight: bold; }
+
+        /* THE CINEMATIC THEATER PLAYER PANEL */
+        .video-player-panel {
+            background: #090a0f;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9);
+        }
+        
+        /* TUNING RESPONSIVE LAYAR PENUH ANTI BLACK-BARS */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Ratio cinematic asli 16:9 */
+            height: 0;
+            background: #000;
+            width: 100%;
+        }
+        
+        /* Iframe Mekso Paksa Penuh Presisi & Anti-Bug Fullscreen Android/iOS */
+        .video-container iframe, 
+        .video-container .placeholder-box { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100% !important; 
+            height: 100% !important; 
+            border: 0; 
+        }
+        
+        /* DYNAMIC AUTO-SLIDESHOW PLACEHOLDER PLAYER OVERLAY */
+        .video-container .placeholder-box { 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: flex-end; 
+            padding: 40px; 
+            text-align: center; 
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            z-index: 5;
+        }
+        .placeholder-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(3,4,7,0.3) 0%, rgba(3,4,7,0.9) 100%);
+            z-index: 1;
+        }
+        .placeholder-content {
+            z-index: 2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+        }
+        .placeholder-content .show-badge {
+            background: #00f2ff;
+            color: #000;
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 900;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .placeholder-content h3 { font-size: 22px; color: #fff; margin-bottom: 6px; font-weight: 800; }
+        .placeholder-content p { color: #8fa0dd; font-size: 13px; }
+
+        /* ULTRA SERVER CHANNELS */
+        .control-bar {
+            padding: 20px 24px;
+            background: #0d0f1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .server-selector { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .server-selector span { font-size: 12px; color: #6f7bb0; font-weight: 800; letter-spacing: 1px; }
+        .server-btn {
+            background: #141829;
+            color: #8fa0dd;
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .server-btn:hover { background: #1c223a; color: #fff; border-color: #00f2ff; }
+        .server-btn.active { background: #00f2ff; color: #000; border-color: #00f2ff; box-shadow: 0 0 20px rgba(0, 242, 255, 0.35); }
+
+        /* CONTENT META AREA */
+        .stream-info { background: #0b0d16; padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.04); }
+        .stream-info h2 { font-size: 24px; color: #fff; margin-bottom: 8px; font-weight: 800; }
+        
+        /* SEARCH CONTROLLER */
+        .search-container { position: relative; width: 100%; }
+        .search-input { width: 100%; background: #0b0d16; border: 1px solid rgba(255,255,255,0.04); padding: 16px 24px; border-radius: 16px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: #00f2ff; box-shadow: 0 0 20px rgba(0, 242, 255, 0.15); background: #0e111d; }
+
+        /* THE CORE PREMIUM MATRIX GRID */
+        .grid-title { font-size: 14px; color: #6f7bb0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+        .donghua-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+        .matrix-card {
+            background: #0b0d16;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255,255,255,0.03);
+            position: relative;
+        }
+        .matrix-card:hover { transform: translateY(-8px); border-color: #00f2ff; box-shadow: 0 16px 32px rgba(0, 242, 255, 0.12); }
+        .matrix-card img { width: 100%; height: 250px; object-fit: cover; background: #151926; display: block; }
+        .matrix-card .info { padding: 14px; background: #0b0d16; }
+        .matrix-card h3 { font-size: 14px; color: #f3f4f6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+        
+        .badge-ep { position: absolute; top: 12px; left: 12px; background-color: #9d4edd; color: white; padding: 4px 10px; font-size: 11px; font-weight: 800; border-radius: 6px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .status-badge { position: absolute; top: 12px; right: 12px; color: white; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 6px; z-index: 10; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .status-badge.Completed { background-color: #22c55e; }
+        .status-badge.Movie { background-color: #ff007f; }
+
+        /* SIDEBAR SYSTEM ENGINE */
+        aside { position: sticky; top: 100px; height: calc(100vh - 140px); display: flex; flex-direction: column; gap: 24px; }
+        .panel { background: #0b0d16; border: 1px solid rgba(255,255,255,0.04); border-radius: 20px; padding: 24px; overflow-y: auto; }
+        .panel h2 { font-size: 12px; color: #9d4edd; letter-spacing: 1.5px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; text-transform: uppercase; font-weight: 800; }
+
+        /* SPONSOR GLASSMORPHISM */
+        .content-node-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+            transition: 0.2s;
+        }
+        .content-node-item:hover { border-color: #9d4edd; background: rgba(157, 78, 221, 0.04); }
+        .content-node-item .badge { display: inline-block; background: #9d4edd; color: #fff; font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 6px; margin-bottom: 10px; }
+        .content-node-item h4 { font-size: 14px; margin-bottom: 6px; color: #fff; font-weight: 700; }
+        .content-node-item p { font-size: 12px; color: #8fa0dd; line-height: 1.6; }
+        .content-node-item a { display: block; margin-top: 12px; font-size: 12px; color: #00f2ff; text-decoration: none; font-weight: bold; }
+
+        /* GLOBAL SCREEN MEDIA ENGINE FOR MOBILE */
+        @media (max-width: 1100px) {
+            .wrapper { grid-template-columns: 1fr; padding: 16px; gap: 20px; }
+            aside { position: relative; height: auto; top: 0; }
+            header { padding: 15px 24px; }
+            header h1 { font-size: 22px; }
+            .slider-card { flex: 0 0 310px; height: 150px; }
+            .slider-card .meta h4 { font-size: 14px; }
+            .donghua-matrix { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+            .matrix-card img { height: 200px; }
+            .matrix-card .info { padding: 10px; }
+            .matrix-card h3 { font-size: 13px; }
+            .control-bar { padding: 16px; }
+            .server-selector { justify-content: center; width: 100%; }
+            .server-btn { flex: 1; min-width: 90px; padding: 10px 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="neonThemeMusic" loop>
+        <source src="ost-renny.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+        <h1 id="logo-neon">DonghuaNeon</h1>
+        <div class="badge-live">NEON ENGINE V4: FIXED MAXIMUM FULLSCREEN (<span id="userOnline">455</span> LIVE)</div>
+    </header>
+
+    <div class="wrapper">
+        <main>
+            <div class="video-player-panel" id="mainPlayerPanel">
+                <div style="background: #111424; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 11px; color: #9d4edd; font-weight: bold;">CINEMATIC NODE CONTROL</span>
+                    <button onclick="closeTheaterPlayer()" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; z-index: 20;">
+                        ✕ METU LAN TUTUP PLAYER
+                    </button>
+                </div>
+                <div class="video-container" id="playerContainer">
+                    <div id="core-player" class="placeholder-box" onclick="playCurrentSlideshowItem()" style="cursor: pointer;">
+                        <div class="placeholder-content">
+                            <div class="show-badge" id="slide-badge">⚡ TRENDING RECOMMENDED</div>
+                            <h3 id="slide-title">Loading Premium Core...</h3>
+                            <p id="slide-desc">Klik nang kene utowo judul ing ngisor gawe langsung muter film</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-bar">
+                    <div class="server-selector">
+                        <span>ROUTE HUB:</span>
+                        <button id="btn-srv-1" class="server-btn active" onclick="switchServer(1)">SERVER 1 (Rumble)</button>
+                        <button id="btn-srv-2" class="server-btn" onclick="switchServer(2)">SERVER 2 (OK.ru)</button>
+                        <button id="btn-srv-3" class="server-btn" onclick="switchServer(3)">SERVER 3 (Serepan)</button>
+                    </div>
+                    <div style="font-size: 11px; color: #00f2ff; font-weight: bold; text-shadow: 0 0 5px rgba(0,242,255,0.4);">● FIXED INJECTOR CORE ACTIVE</div>
+                </div>
+            </div>
+            
+            <div class="stream-info">
+                <h2 id="active-title">Pilih Judul Film Ring Ngisor</h2>
+                <p id="active-tags" style="font-size: 12px; color: #6f7bb0; font-weight: 600;">Status Node: Main System Standby Cloud Slideshow Active</p>
+            </div>
+
+            <div class="featured-slider-panel">
+                <h3 class="grid-title">⚡ Trending Global Blockbuster</h3>
+                <div class="slider-container" id="sliderRenderer"></div>
+            </div>
+
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="⚡ Goleki Donghua Pilihanmu (Premium Real-time Filter)..." oninput="prosesGoleki()">
+            </div>
+
+            <h2 class="grid-title" id="sectionTitle">Database Donghua Neon Premium</h2>
+            <div class="donghua-matrix" id="matrix-renderer"></div>
+            <div id="infoKosong" style="text-align: center; color: #6f7bb0; padding: 40px 0; font-style: italic; display: none;">Donghua sing mbok goleki gak ketemu, Cak...</div>
+        </main>
+
+        <aside>
+            <div class="panel" style="flex-grow: 1;">
+                <h2>RECOMMENDED SPONSOR MODULE</h2>
+                <div id="native-ads-shuttle">
+                    <p style="color:#4b5563; font-size:12px;">Awaiting node tokens...</p>
+                </div>
+            </div>
+
+            <div class="panel" style="height: 35%;">
+                <h2>EDGE LIVE MONITOR</h2>
+                <div style="font-size: 12px; font-family: monospace; color: #8fa0dd; line-height: 1.8;">
+                    <p>Host Route: <span id="lbl-active-server" style="color:#00f2ff; font-weight:bold;">SERVER 1 (Rumble)</span></p>
+                    <p>Leak Security: <span style="color: #22c55e; font-weight:bold;">Locked Secure</span></p>
+                    <p style="color: #6f7bb0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 8px; padding-top: 4px;">Logs Token Core Engine:</p>
+                    <div id="liveLogs" style="color:#9d4edd; font-size:10px;">[SYS] Ready connect nodes...</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // BACKEND API DATABASES CORE
+        const BACKEND_API_MOCK = [
+            { id: 1, title: "Renegade Immortal - Ep 146", dino: "Senin", tags: ["gaming", "gadget"], img: "https://animexin.dev/wp-content/uploads/2023/09/Renegade-Immortal-Ascendant.jpg", servers: { 1: "https://rumble.com/embed/v79fa9a/?pub=4peqws", 2: "https://ok.ru/videoembed/14710673771060?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 2, title: "Immortality S5 - Ep 26 [Completed]", dino: "Senin", tags: ["kopi", "gaming"], img: "https://animexin.dev/wp-content/uploads/2025/12/Immortality-S5-768x1024.jpg", servers: { 1: "https://rumble.com/embed/v78h1pg/?pub=4peqws", 2: "https://ok.ru/videoembed/14710673771060?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 3, title: "100.000 Years of Refining Qi - Ep 351", dino: "Selasa", tags: ["sepeda", "outdoor"], img: "https://animexin.dev/wp-content/uploads/2023/02/100.000-qi-04-26.jpg", servers: { 1: "https://rumble.com/embed/v79ibhm/?pub=4peqws", 2: "https://ok.ru/videoembed/14733915654708?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 4, title: "Movie: Renegade Immortal: Battle Of The Gods", dino: "Rabu", tags: ["gaming"], img: "https://animexin.dev/wp-content/uploads/2025/05/Renegade-Immortal-Movie-War-of-the-Gods-768x1078.webp", servers: { 1: "https://rumble.com/embed/v6rx7nh/?pub=4l4o9x", 2: "https://ok.ru/videoembed/9820047542836?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 5, title: "Movie: Throne of Seal: The Crownless God", dino: "Rabu", tags: ["gadget"], img: "https://animexin.dev/wp-content/uploads/2025/04/Throne-of-Seal-The-Crownless-God-768x1152.jpg", servers: { 1: "https://rumble.com/embed/v6qkxtp/?pub=4l4o9x", 2: "https://ok.ru/videoembed/9730213808692?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 6, title: "Movie: Soul Land: Sword Dao Chen Xin", dino: "Rabu", tags: ["outdoor"], img: "https://animexin.dev/wp-content/uploads/2025/07/sl-1-movie.jpg", servers: { 1: "https://rumble.com/embed/v6uia8i/?pub=4l4o9x", 2: "https://ok.ru/videoembed/9978095143476?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 7, title: "Against The Gods - Ep 43", dino: "Kamis", tags: ["kopi"], img: "https://animexin.dev/wp-content/uploads/2023/09/against-the-gods-s2.jpg", servers: { 1: "https://rumble.com/embed/v79losw/?pub=4peqws", 2: "https://ok.ru/videoembed/14761135180340?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 8, title: "Big Brother - Ep 147", dino: "Kamis", tags: ["sepeda"], img: "https://animexin.dev/wp-content/uploads/2023/12/big-brother-nianfan2.webp", servers: { 1: "https://rumble.com/embed/v79ltd6/?pub=4peqws", 2: "https://ok.ru/videoembed/14761546091060?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 9, title: "Sword of Coming S2 - Ep 27 [Completed]", dino: "Kamis", tags: ["gaming", "kopi"], img: "https://animexin.dev/wp-content/uploads/2025/12/sword-of-coming-s2-768x1077.jpg", servers: { 1: "https://rumble.com/embed/v78xj2s/?pub=4peqws", 2: "https://geo.dailymotion.com/player/xhojl.html?video=k34gI7vBsfoxhOGz12W", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 10, title: "Tomb of Fallen Gods S3 - Ep 48", dino: "Kamis", tags: ["gadget"], img: "https://animexin.dev/wp-content/uploads/2025/08/Tomb-of-Fallen-Gods-S3.jpg", servers: { 1: "https://rumble.com/embed/v79lu38/?pub=4peqws", 2: "https://ok.ru/videoembed/14761650227764?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 11, title: "Perfect World - Ep 275", dino: "Jumat", tags: ["outdoor"], img: "https://animexin.dev/wp-content/uploads/2021/04/perfect-world-04-26.jpg", servers: { 1: "https://rumble.com/embed/v79nj30/?pub=4peqws", 2: "https://geo.dailymotion.com/player/x1kcvu.html?video=k2DAED7VAuML4ZH3Spo", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 12, title: "The Demon Hunter - Ep 83", dino: "Jumat", tags: ["gaming"], img: "https://animexin.dev/wp-content/uploads/2023/06/cang-yuan-tu-3-768x1152.jpg", servers: { 1: "https://geo.dailymotion.com/player/x1kcvu.html?video=k2btiGmUrhEVp9H44GK", 2: "https://odysee.com/%24/embed/%40ikanmomogi%3Af%2FAnimeXin.dev-demon-hunter-ep-83-indo%3Ae", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 13, title: "Soul Land 2: Peerless Tang Sect - Ep 159", dino: "Sabtu", tags: ["sepeda"], img: "https://animexin.dev/wp-content/uploads/2023/06/Soul-Land-2-HD-768x1077.jpg", servers: { 1: "https://rumble.com/embed/v79o4fc/?pub=4peqws", 2: "https://geo.dailymotion.com/player/xjvqr.html?video=k5LYV4NNfAPdXkH5mtc", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 14, title: "Ever Night - Ep 11", dino: "Sabtu", tags: ["kopi"], img: "https://animexin.dev/wp-content/uploads/2026/04/Ever-Night-768x1024.jpg", servers: { 1: "https://rumble.com/embed/v79pnne/?pub=4peqws", 2: "https://geo.dailymotion.com/player/xjvqr.html?video=k5b6kKSQIs9JCmH6LF4", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 15, title: "100.000 Years of Refining Qi - Ep 351 (Sabtu)", dino: "Sabtu", tags: ["gadget"], img: "https://animexin.dev/wp-content/uploads/2023/02/100.000-qi-04-26.jpg", servers: { 1: "https://rumble.com/embed/v79piv2/?pub=4peqws", 2: "https://geo.dailymotion.com/player/x1kcvu.html?video=kDA3WNICcLYPH8H6z6O", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 16, title: "Legend of Martial Immortal - Ep 173", dino: "Sabtu", tags: ["outdoor"], img: "https://animexin.dev/wp-content/uploads/2023/03/legend-immortal-2025-768x1152.jpg", servers: { 1: "https://rumble.com/embed/v79pcwg/?pub=4peqws", 2: "https://geo.dailymotion.com/player/xjvqr.html?video=k3PPFWxPTaYxPRH6i9o", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 17, title: "A Record of a Mortal’s Journey - Ep 180", dino: "Sabtu", tags: ["gaming"], img: "https://animexin.dev/wp-content/uploads/2023/11/A-record-Mortal-Journey-2026.jpg", servers: { 1: "https://rumble.com/embed/v79pe1a/?pub=4peqws", 2: "https://geo.dailymotion.com/player/x1kcvu.html?video=k263Ybf5t5PTKNH6l8y", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 18, title: "Battle Through The Heavens S5 - Ep 205", dino: "Minggu", tags: ["kopi", "gadget"], img: "https://animexin.dev/wp-content/uploads/2024/10/BTTH-S5-Ax.jpg", servers: { 1: "https://rumble.com/embed/v79ps7q/?pub=4peqws", 2: "https://geo.dailymotion.com/player/xhojl.html?video=k1IXQFVCmaphYxH6WAS", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
+            { id: 19, title: "Tales of Herding Gods - Ep 88", dino: "Minggu", tags: ["outdoor"], img: "https://animexin.dev/wp-content/uploads/2024/10/tohg-nianfan2.webp", servers: { 1: "https://rumble.com/embed/v79evus/?pub=4peqws", 2: "https://ok.ru/videoembed/14704566995508?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } }
+        ];
+
+        const ADS_REGISTRY = {
+            "gaming": [{ h: "Asus ROG Phone 2026", d: "Spesifikasi dewa gae nonton Donghua 4K tanpa patah-patah.", l: "#" }],
+            "sepeda": [{ h: "Polygon Collosus X8", d: "Diskon edan-edanan gae arek komunitas streaming Indonesia.", l: "#" }],
+            "kopi": [{ h: "Kapal Api Black Espresso", d: "Cek gak gampang turu pas maraton nonton update donghua rilis bengi.", l: "#" }],
+            "gadget": [{ h: "Sponsor Kursi Ergonomis", d: "Kursi khusus dev lan penonton setia biar gak gampang boyoken.", l: "#" }],
+            "outdoor": [{ h: "Eiger Adventure Gear", d: "Jaket lan tas anti banyu, pas dienggo mabar nang njobo omah.", l: "#" }]
+        };
+
+        let currentActiveId = null;
+        let currentSelectedServer = 1;
+        let isGlobalLocked = false;
+        let slideshowIntervalId = null;
+        let currentSlideIndex = 0;
+        
+        const trendingList = BACKEND_API_MOCK.slice(0, 5); 
+        const CHUNK_LIMIT = 12; 
+
+        document.addEventListener("DOMContentLoaded", () => { 
+            renderSliderUI();
+            renderMatrixUI(BACKEND_API_MOCK); 
+            startPlayerSlideshow(); 
+            
+            // SYSTEM ENGINE MONITOR INTERVALS
+            setInterval(() => {
+                document.getElementById('userOnline').textContent = Math.floor(Math.random() * (580 - 440 + 1)) + 440;
+                const logs = ["NODE_CONN_OK", "STREAM_DATA_BUFFER", "XHR_TOKEN_GRANTED", "RAM_GUARD_LOCKED"];
+                document.getElementById('liveLogs').textContent = `[SYS] ${logs[Math.floor(Math.random() * logs.length)]} -> hash_${(Math.random() + 1).toString(36).substring(7).toUpperCase()}`;
+            }, 3000);
+        });
+
+        function sanitizeShield(text) {
+            return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function urupnoMusikSultan() {
+            const musik = document.getElementById("neonThemeMusic");
+            if (musik && musik.paused && !currentActiveId) {
+                musik.play().then(() => {
+                    document.removeEventListener("click", urupnoMusikSultan);
+                    document.removeEventListener("touchstart", urupnoMusikSultan);
+                }).catch(() => {});
+            }
+        }
+        document.addEventListener("click", urupnoMusikSultan);
+        document.addEventListener("touchstart", urupnoMusikSultan);
+
+        function renderSliderUI() {
+            const slider = document.getElementById("sliderRenderer");
+            let buffer = "";
+            trendingList.forEach(item => {
+                buffer += `
+                    <div class="slider-card" onclick="bootstrapStreamEngine(${item.id})">
+                        <img src="${item.img}" alt="Trending Image">
+                        <div class="meta">
+                            <h4>${sanitizeShield(item.title)}</h4>
+                            <p>🔥 Trending Now</p>
+                        </div>
+                    </div>
+                `;
+            });
+            slider.innerHTML = buffer;
+        }
+
+        function startPlayerSlideshow() {
+            if (slideshowIntervalId) clearInterval(slideshowIntervalId);
+            updateSlideshowView();
+            slideshowIntervalId = setInterval(() => {
+                currentSlideIndex = (currentSlideIndex + 1) % trendingList.length;
+                updateSlideshowView();
+            }, 5000);
+        }
+
+        function updateSlideshowView() {
+            const playerBox = document.getElementById("core-player");
+            if (!playerBox) return; 
+            const currentItem = trendingList[currentSlideIndex];
+            playerBox.style.backgroundImage = `url('${currentItem.img}')`;
+            document.getElementById("slide-title").innerText = currentItem.title;
+            document.getElementById("slide-badge").innerText = `🔥 TRENDING #${currentSlideIndex + 1} • CLICK TO PLAY`;
+        }
+
+        function playCurrentSlideshowItem() {
+            const currentItem = trendingList[currentSlideIndex];
+            bootstrapStreamEngine(currentItem.id);
+        }
+
+        function stopPlayerSlideshow() {
+            if (slideshowIntervalId) {
+                clearInterval(slideshowIntervalId);
+                slideshowIntervalId = null;
+            }
+        }
+
+        function renderMatrixUI(dataList) {
+            const container = document.getElementById("matrix-renderer");
+            const infoKosong = document.getElementById("infoKosong");
+            container.innerHTML = "";
+
+            if(dataList.length === 0) {
+                infoKosong.style.display = "block";
+                return;
+            }
+            infoKosong.style.display = "none";
+
+            const safeData = dataList.slice(0, CHUNK_LIMIT);
+            const fragment = document.createDocumentFragment(); 
+
+            safeData.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "matrix-card";
+                card.onclick = () => bootstrapStreamEngine(item.id);
+                
+                let badgeStatus = "";
+                if(item.title.toLowerCase().includes("movie")) {
+                    badgeStatus = `<div class="status-badge Movie">Movie</div>`;
+                } else if(item.title.toLowerCase().includes("completed")) {
+                    badgeStatus = `<div class="status-badge Completed">End</div>`;
+                }
+
+                let epMatch = item.title.match(/Ep\s*(\d+)/i) || item.title.match(/Episode\s*(\d+)/i);
+                let badgeEp = epMatch ? `Ep ${epMatch[1]}` : "HD";
+
+                card.innerHTML = `
+                    <div class="badge-ep">${badgeEp}</div>
+                    ${badgeStatus}
+                    <img src="${item.img}" alt="Cover" loading="lazy">
+                    <div class="info">
+                        <h3>${sanitizeShield(item.title)}</h3>
+                    </div>
+                `;
+                fragment.appendChild(card);
+            });
+            container.appendChild(fragment);
+
+            if(dataList.length > CHUNK_LIMIT) {
+                const notice = document.createElement("div");
+                notice.style = "grid-column: 1/-1; text-align: center; font-size: 12px; color: #6f7bb0; padding: 10px;";
+                notice.innerText = `⚡ Data liyane (${dataList.length - CHUNK_LIMIT} judul) aman nang server, RAM HP-mu dijogo.`;
+                container.appendChild(notice);
+            }
+        }
+
+        // ========================================================
+        // HACKER CLASS PROFESSIONAL INJECTOR - FIXED FULLSCREEN BUG
+        // ========================================================
+        function bootstrapStreamEngine(id) {
+            if (isGlobalLocked) return;
+            isGlobalLocked = true;
+
+            const targetNode = BACKEND_API_MOCK.find(x => x.id === id);
+            if (!targetNode) { isGlobalLocked = false; return; }
+
+            const musik = document.getElementById("neonThemeMusic");
+            if (musik) musik.pause();
+
+            stopPlayerSlideshow(); 
+
+            currentActiveId = id; 
+            document.getElementById("active-title").innerText = targetNode.title;
+            document.getElementById("active-tags").innerText = `Dino Rilis: ${targetNode.dino} | Node Core Active`;
+
+            loadVideoToIframe(targetNode.servers[currentSelectedServer]);
+            renderNativeAds(targetNode.tags);
+
+            isGlobalLocked = false;
+        }
+
+        function loadVideoToIframe(videoUrl) {
+            const container = document.getElementById("playerContainer");
+            
+            // SECURITY INTEGRITY ALLOW FLAGS - FORCED MOBILE FULLSCREEN ACTIVATED
+            container.innerHTML = `
+                <iframe src="${videoUrl}" 
+                        width="100%" 
+                        height="100%" 
+                        allowfullscreen="true" 
+                        webkitallowfullscreen="true" 
+                        mozallowfullscreen="true" 
+                        sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        frameborder="0">
+                </iframe>
+            `;
+        }
+
+        function switchServer(serverNum) {
+            currentSelectedServer = serverNum;
+            
+            document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-srv-${serverNum}`).classList.add('active');
+            
+            const serverNames = { 1: "SERVER 1 (Rumble)", 2: "SERVER 2 (OK.ru)", 3: "SERVER 3 (Serepan)" };
+            document.getElementById("lbl-active-server").innerText = serverNames[serverNum];
+
+            if (currentActiveId) {
+                const targetNode = BACKEND_API_MOCK.find(x => x.id === currentActiveId);
+                if (targetNode) {
+                    loadVideoToIframe(targetNode.servers[serverNum]);
+                }
+            }
+        }
+
+        function renderNativeAds(tags) {
+            const adsContainer = document.getElementById("native-ads-shuttle");
+            adsContainer.innerHTML = "";
+            
+            tags.forEach(tag => {
+                if (ADS_REGISTRY[tag]) {
+                    ADS_REGISTRY[tag].forEach(ad => {
+                        adsContainer.innerHTML += `
+                            <div class="content-node-item">
+                                <div class="badge">SPONSOR NODE</div>
+                                <h4>${ad.h}</h4>
+                                <p>${ad.d}</p>
+                                <a href="${ad.l}">Sikat Saiki →</a>
+                            </div>
+                        `;
+                    });
+                }
+            });
+            if(adsContainer.innerHTML === "") {
+                adsContainer.innerHTML = `<p style="color:#4b5563; font-size:12px;">No sponsor tokens for this node.</p>`;
+            }
+        }
+
+        function closeTheaterPlayer() {
+            currentActiveId = null;
+            document.getElementById("active-title").innerText = "Pilih Judul Film Ring Ngisor";
+            document.getElementById("active-tags").innerText = "Status Node: Main System Standby Cloud Slideshow Active";
+            
+            document.getElementById("playerContainer").innerHTML = `
+                <div id="core-player" class="placeholder-box" onclick="playCurrentSlideshowItem()" style="cursor: pointer;">
+                    <div class="placeholder-content">
+                        <div class="show-badge" id="slide-badge">⚡ TRENDING RECOMMENDED</div>
+                        <h3 id="slide-title">Loading Premium Core...</h3>
+                        <p id="slide-desc">Klik nang kene utowo judul ing ngisor gawe langsung muter film</p>
+                    </div>
+                </div>
+            `;
+            startPlayerSlideshow();
+        }
+
+        function prosesGoleki() {
+            const keyword = document.getElementById("searchInput").value.toLowerCase();
+            const hasilFilter = BACKEND_API_MOCK.filter(item => item.title.toLowerCase().includes(keyword));
+            renderMatrixUI(hasilFilter);
+            document.getElementById("sectionTitle").innerText = keyword ? `Hasil Golekan: "${keyword}"` : "Database Donghua Neon Premium";
+        }
+    </script>
+</body>
+</html>
