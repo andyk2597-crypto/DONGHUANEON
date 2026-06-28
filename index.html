@@ -1,4 +1,236 @@
-<script>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>DonghuaNeon Pro - V7 Immersive Ultimate</title>
+    <style>
+        /* CORE SYSTEM BRANDING & RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #030407; color: #f3f4f6; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+
+        @keyframes neonGlowPulse {
+            0%, 100% { color: #00f2ff; text-shadow: 0 0 15px rgba(0, 242, 255, 0.6); }
+            50% { color: #9d4edd; text-shadow: 0 0 20px rgba(157, 78, 221, 0.6); }
+        }
+
+        header { 
+            background: rgba(11, 13, 22, 0.8); 
+            backdrop-filter: blur(12px);
+            padding: 20px 40px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky; top: 0; z-index: 100;
+        }
+        header h1 { font-size: 26px; font-weight: 900; letter-spacing: 3px; animation: neonGlowPulse 6s infinite ease-in-out; }
+        .badge-live { 
+            background: rgba(0, 242, 255, 0.06); color: #00f2ff; padding: 6px 16px; border-radius: 30px; 
+            font-size: 11px; font-weight: bold; border: 1px solid rgba(0, 242, 255, 0.3); text-shadow: 0 0 8px rgba(0, 242, 255, 0.4); 
+        }
+
+        .wrapper { display: grid; grid-template-columns: 1fr 360px; gap: 28px; max-width: 1700px; margin: 0 auto; padding: 28px; }
+        main { display: flex; flex-direction: column; gap: 28px; width: 100%; overflow: hidden; }
+        
+        /* PREMIUM SLIDER PANEL */
+        .featured-slider-panel { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .slider-container { display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 8px; }
+        .slider-container::-webkit-scrollbar { height: 4px; }
+        .slider-container::-webkit-scrollbar-thumb { background: #1a1f30; border-radius: 10px; }
+        .slider-card {
+            flex: 0 0 420px; height: 180px; background: linear-gradient(180deg, rgba(0,0,0,0) 20%, rgba(11,13,22,1) 100%);
+            border-radius: 16px; position: relative; overflow: hidden; cursor: pointer; border: 1px solid rgba(255,255,255,0.03); transition: 0.3s;
+        }
+        .slider-card:hover { border-color: #9d4edd; transform: scale(1.01); box-shadow: 0 10px 20px rgba(157, 78, 221, 0.15); }
+        .slider-card img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.65; transition: 0.5s; }
+        .slider-card:hover img { transform: scale(1.05); opacity: 0.8; }
+        .slider-card .meta { position: absolute; bottom: 0; left: 0; padding: 20px; width: 100%; }
+        .slider-card .meta h4 { font-size: 16px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); margin-bottom: 4px; }
+        .slider-card .meta p { font-size: 12px; color: #00f2ff; font-weight: bold; }
+
+        /* THE CINEMATIC THEATER PLAYER ENGINE */
+        .video-player-panel {
+            background: #090a0f; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9); position: relative;
+            scroll-margin-top: 100px;
+        }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; width: 100%; overflow: hidden; }
+        .video-container iframe, .video-container .placeholder-box { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: 0; }
+        
+        /* FLOATING METU BUTTON - MUNG MUNCUL PAS FULLSCREEN REKAYASA */
+        #floatingExitBtn {
+            display: none; position: fixed; top: 16px; right: 16px; z-index: 2000000000;
+            background: rgba(239, 68, 68, 0.8); color: white; border: none; padding: 8px 16px;
+            border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        /* HARD CORE RESPONSIVE IMMERSIVE */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .video-player-panel.force-fullscreen {
+                position: fixed !important; top: 0 !important; left: 0 !important; 
+                width: 100vw !important; height: 100vh !important; z-index: 9999999 !important;
+                background: #000 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important;
+            }
+            .video-player-panel.force-fullscreen .video-container {
+                width: 100vh !important; height: 100vw !important; padding-bottom: 0 !important;
+                transform: rotate(90deg) !important; transform-origin: top left !important;
+                position: absolute !important; top: 0 !important; left: 100% !important;
+            }
+            .video-player-panel.force-fullscreen .control-bar, 
+            .video-player-panel.force-fullscreen .panel-top-nav { display: none !important; }
+            
+            .video-player-panel.force-fullscreen ~ #floatingExitBtn { display: block !important; }
+        }
+
+        .video-container .placeholder-box { 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 40px; 
+            text-align: center; background-size: cover; background-position: center; transition: background-image 0.5s ease-in-out; position: absolute; z-index: 5;
+        }
+        .placeholder-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(3,4,7,0.3) 0%, rgba(3,4,7,0.9) 100%); z-index: 1; }
+        .placeholder-content { z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
+        .placeholder-content .show-badge { background: #00f2ff; color: #000; padding: 4px 12px; font-size: 10px; font-weight: 900; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: inline-block; }
+        .placeholder-content h3 { font-size: 22px; color: #fff; margin-bottom: 6px; font-weight: 800; }
+        .placeholder-content p { color: #8fa0dd; font-size: 13px; }
+
+        .control-bar { padding: 20px 24px; background: #0d0f1a; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.04); flex-wrap: wrap; gap: 14px; }
+        .server-selector { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .server-selector span { font-size: 12px; color: #6f7bb0; font-weight: 800; letter-spacing: 1px; }
+        .server-btn { background: #141829; color: #8fa0dd; border: 1px solid rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+        .server-btn:hover { background: #1c223a; color: #fff; border-color: #00f2ff; }
+        .server-btn.active { background: #00f2ff; color: #000; border-color: #00f2ff; box-shadow: 0 0 20px rgba(0, 242, 255, 0.35); }
+
+        .stream-info { background: #0b0d16; padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.04); }
+        .stream-info h2 { font-size: 24px; color: #fff; margin-bottom: 8px; font-weight: 800; }
+        
+        .search-container { position: relative; width: 100%; }
+        .search-input { width: 100%; background: #0b0d16; border: 1px solid rgba(255,255,255,0.04); padding: 16px 24px; border-radius: 16px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: #00f2ff; box-shadow: 0 0 20px rgba(0, 242, 255, 0.15); background: #0e111d; }
+
+        .grid-title { font-size: 14px; color: #6f7bb0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+        .donghua-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; width: 100%; }
+        .matrix-card { background: #0b0d16; border-radius: 16px; overflow: hidden; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border: 1px solid rgba(255,255,255,0.03); position: relative; }
+        .matrix-card:hover { transform: translateY(-8px); border-color: #00f2ff; box-shadow: 0 16px 32px rgba(0, 242, 255, 0.12); }
+        .matrix-card img { width: 100%; height: 250px; object-fit: cover; background: #151926; display: block; }
+        .matrix-card .info { padding: 14px; background: #0b0d16; }
+        .matrix-card h3 { font-size: 14px; color: #f3f4f6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+        
+        .badge-ep { position: absolute; top: 12px; left: 12px; background-color: #9d4edd; color: white; padding: 4px 10px; font-size: 11px; font-weight: 800; border-radius: 6px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .status-badge { position: absolute; top: 12px; right: 12px; color: white; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 6px; z-index: 10; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .status-badge.Completed { background-color: #22c55e; }
+        .status-badge.Movie { background-color: #ff007f; }
+
+        aside { position: sticky; top: 100px; height: calc(100vh - 140px); display: flex; flex-direction: column; gap: 24px; }
+        .panel { background: #0b0d16; border: 1px solid rgba(255,255,255,0.04); border-radius: 20px; padding: 24px; overflow-y: auto; }
+        .panel h2 { font-size: 12px; color: #9d4edd; letter-spacing: 1.5px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; text-transform: uppercase; font-weight: 800; }
+
+        .content-node-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+        .content-node-item .badge { display: inline-block; background: #9d4edd; color: #fff; font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 6px; margin-bottom: 10px; }
+        .content-node-item h4 { font-size: 14px; margin-bottom: 6px; color: #fff; font-weight: 700; }
+        .content-node-item p { font-size: 12px; color: #8fa0dd; line-height: 1.6; }
+        .content-node-item a { display: block; margin-top: 12px; font-size: 12px; color: #00f2ff; text-decoration: none; font-weight: bold; }
+
+        .hacker-fullscreen-btn {
+            display: none; background: #00f2ff; color: #000; border: none; padding: 8px 14px; 
+            border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        @media (max-width: 768px) {
+            .hacker-fullscreen-btn { display: inline-block; }
+        }
+
+        @media (max-width: 1100px) {
+            .wrapper { grid-template-columns: 1fr; padding: 16px; gap: 20px; }
+            aside { position: relative; height: auto; top: 0; }
+            header { padding: 15px 24px; h1 { font-size: 22px; } }
+            .slider-card { flex: 0 0 310px; height: 150px; }
+            .donghua-matrix { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+            .matrix-card img { height: 200px; }
+            .server-selector { justify-content: center; width: 100%; }
+            .server-btn { flex: 1; min-width: 90px; padding: 10px 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="neonThemeMusic" loop preload="none">
+        <source src="ost-renny.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+        <h1 id="logo-neon">DonghuaNeon</h1>
+        <div class="badge-live">CORE NODE V7: IMMERSIVE CLEAN TUNNEL (<span id="userOnline">612</span> LIVE)</div>
+    </header>
+
+    <div class="wrapper">
+        <main>
+            <div class="video-player-panel" id="mainPlayerPanel">
+                <div class="panel-top-nav" style="background: #111424; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 11px; color: #9d4edd; font-weight: bold;">CINEMATIC NODE CONTROL</span>
+                    <div style="display:flex; gap:10px;">
+                        <button class="hacker-fullscreen-btn" id="triggerLandscapeHack">⚡ REKAYASA HORIZONTAL</button>
+                        <button id="closeTheaterBtn" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 20;">✕ TUTUP PLAYER</button>
+                    </div>
+                </div>
+                <div class="video-container" id="playerContainer">
+                    <div id="core-player" class="placeholder-box" style="cursor: pointer;">
+                        <div class="placeholder-content">
+                            <div class="show-badge" id="slide-badge">⚡ LOADING SECURE ROUTE</div>
+                            <h3 id="slide-title">Syncing Cloud Stream Nodes...</h3>
+                            <p>Klik nang kene utowo film ing ngisor gawe langsung muter</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-bar">
+                    <div class="server-selector" id="serverSelectorGrp">
+                        <span>ROUTE HUB:</span>
+                        <button data-srv="1" class="server-btn active">SERVER 1 (Rumble)</button>
+                        <button data-srv="2" class="server-btn">SERVER 2 (OK.ru)</button>
+                        <button data-srv="3" class="server-btn">SERVER 3 (Serepan)</button>
+                    </div>
+                    <div style="font-size: 11px; color: #00f2ff; font-weight: bold; text-shadow: 0 0 5px rgba(0,242,255,0.4);">● MATRIX TUNNEL SECURE</div>
+                </div>
+            </div>
+
+            <button id="floatingExitBtn">✕ KELUAR CINEMATIC</button>
+            
+            <div class="stream-info">
+                <h2 id="active-title">Pilih Judul Film Ring Ngisor</h2>
+                <p id="active-tags" style="font-size: 12px; color: #6f7bb0; font-weight: 600;">Status Node: Main System Standby Cloud Slideshow Active</p>
+            </div>
+
+            <div class="featured-slider-panel">
+                <h3 class="grid-title">⚡ Trending Global Blockbuster</h3>
+                <div class="slider-container" id="sliderRenderer"></div>
+            </div>
+
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="⚡ Goleki Donghua Pilihanmu (Premium Real-time Filter)...">
+            </div>
+
+            <h2 class="grid-title" id="sectionTitle">Database Donghua Neon Premium</h2>
+            <div class="donghua-matrix" id="matrix-renderer"></div>
+            <div id="infoKosong" style="text-align: center; color: #6f7bb0; padding: 40px 0; font-style: italic; display: none;">Donghua sing mbok goleki gak ketemu, Cak...</div>
+        </main>
+
+        <aside>
+            <div class="panel" style="flex-grow: 1;">
+                <h2>RECOMMENDED SPONSOR MODULE</h2>
+                <div id="native-ads-shuttle"><p style="color:#4b5563; font-size:12px;">Awaiting node tokens...</p></div>
+            </div>
+            <div class="panel" style="height: 35%;">
+                <h2>EDGE LIVE MONITOR</h2>
+                <div style="font-size: 12px; font-family: monospace; color: #8fa0dd; line-height: 1.8;">
+                    <p>Host Route: <span id="lbl-active-server" style="color:#00f2ff; font-weight:bold;">SERVER 1 (Rumble)</span></p>
+                    <p>Leak Security: <span style="color: #22c55e; font-weight:bold;">Locked Secure</span></p>
+                    <div id="liveLogs" style="color:#9d4edd; font-size:10px; margin-top:8px; border-top:1px solid rgba(255,255,255,0.05);">[SYS] Ready connect...</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
         (() => {
             "use strict";
 
@@ -42,7 +274,7 @@
                 return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
             }
 
-            // HACKER FIX: Fungsi exitHandler digawe cek gak crash!
+            // PROFESSIONAL PATCH: exitHandler didefinisikno cek gak crash!
             const exitHandler = () => {
                 if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
                     document.getElementById("mainPlayerPanel").classList.remove("force-fullscreen");
@@ -180,7 +412,7 @@
             }
 
             function startPlaceholderTicker() {
-                // ANTI RAM LEAK: Resikno interval sakdurunge nggae anyar
+                // SEPUH HACK: Resikno interval lawas dhisik ben RAM gak bocor!
                 if (slideshowIntervalId) { clearInterval(slideshowIntervalId); }
 
                 const updateTicker = () => {
@@ -222,7 +454,7 @@
             }
 
             function injectIframeSecure(url) {
-                // HARDENING SECURITY OVERRIDE: Sandbox tak optimalno gae stream
+                // OPTIMIZED SANDBOX: Aman teko malware tapi lancar muter player video
                 document.getElementById("playerContainer").innerHTML = `
                     <iframe src="${url}" 
                             width="100%" height="100%" 
@@ -298,3 +530,5 @@
             }
         })();
     </script>
+</body>
+</html>
