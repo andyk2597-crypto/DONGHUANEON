@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DonghuaNeon Pro - Enterprise Ultra Stable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>DonghuaNeon Pro - Immersive Enterprise</title>
     <style>
         /* CORE SYSTEM BRANDING & RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
@@ -58,21 +58,29 @@
         .video-container iframe, .video-container .placeholder-box { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: 0; }
         
         /* =======================================================
-           HACKER CLASS: HACK ROTATION ORIENTATION VIA MOBILE CSS
+           HACKER CLASS: IMMERSIVE FULL SCREEN OVERRIDE FOR MOBILE
            =======================================================
         */
         @media (max-width: 768px) and (orientation: portrait) {
             .video-player-panel.force-fullscreen {
-                position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999;
-                background: #000; border-radius: 0;
+                position: fixed !important; top: 0 !important; left: 0 !important; 
+                width: 100vw !important; height: 100vh !important; z-index: 999999 !important;
+                background: #000 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important;
             }
             .video-player-panel.force-fullscreen .video-container {
-                width: 100vh; height: 100vw; padding-bottom: 0;
-                transform: rotate(90deg); transform-origin: top left;
-                position: absolute; top: 0; left: 100%;
+                width: 100vh !important; height: 100vw !important; padding-bottom: 0 !important;
+                transform: rotate(90deg) !important; transform-origin: top left !important;
+                position: absolute !important; top: 0 !important; left: 100% !important;
             }
+            /* Ndhelikno kabeh bar navigasi bawaan web pas mode rekayasa aktif */
             .video-player-panel.force-fullscreen .control-bar, 
-            .video-player-panel.force-fullscreen .panel-top-nav { display: none !important; }
+            .video-player-panel.force-fullscreen .panel-top-nav-text { display: none !important; }
+            
+            /* Tombol khusus ngambang gawe metu teko mode rekayasa */
+            .video-player-panel.force-fullscreen .panel-top-nav {
+                position: absolute !important; top: 12px !important; right: 12px !important; 
+                z-index: 1000000 !important; background: transparent !important; border: none !important; padding: 0 !important;
+            }
         }
 
         .video-container .placeholder-box { 
@@ -151,14 +159,14 @@
 
     <header>
         <h1 id="logo-neon">DonghuaNeon</h1>
-        <div class="badge-live">CORE NODE V5: ANTI-ROTATION LAG (<span id="userOnline">512</span> LIVE)</div>
+        <div class="badge-live">CORE NODE V6: IMMERSIVE FULLSCREEN ACTIVE (<span id="userOnline">583</span> LIVE)</div>
     </header>
 
     <div class="wrapper">
         <main>
             <div class="video-player-panel" id="mainPlayerPanel">
                 <div class="panel-top-nav" style="background: #111424; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <span style="font-size: 11px; color: #9d4edd; font-weight: bold;">CINEMATIC NODE CONTROL</span>
+                    <span class="panel-top-nav-text" style="font-size: 11px; color: #9d4edd; font-weight: bold;">CINEMATIC NODE CONTROL</span>
                     <div style="display:flex; gap:10px;">
                         <button class="hacker-fullscreen-btn" id="triggerLandscapeHack">⚡ REKAYASA HORIZONTAL</button>
                         <button id="closeTheaterBtn" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 20;">✕ TUTUP PLAYER</button>
@@ -224,7 +232,6 @@
         (() => {
             "use strict";
 
-            // HARDCORE PRODUCTION DATA (STABLE MATRIX STORAGE)
             const BACKEND_API_MOCK = [
                 { id: 1, title: "Renegade Immortal - Ep 146", dino: "Senin", tags: ["gaming","gadget"], img: "https://animexin.dev/wp-content/uploads/2023/09/Renegade-Immortal-Ascendant.jpg", servers: { 1: "https://rumble.com/embed/v79fa9a/?pub=4peqws", 2: "https://ok.ru/videoembed/14710673771060?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
                 { id: 2, title: "Immortality S5 - Ep 26 [Completed]", dino: "Senin", tags: ["kopi","gaming"], img: "https://animexin.dev/wp-content/uploads/2025/12/Immortality-S5-768x1024.jpg", servers: { 1: "https://rumble.com/embed/v78h1pg/?pub=4peqws", 2: "https://ok.ru/videoembed/14710673771060?nochat=1", 3: "https://www.dailymotion.com/embed/video/x8x9g8e" } },
@@ -261,12 +268,10 @@
             let currentSlideIndex = 0;
             const trendingList = BACKEND_API_MOCK.slice(0, 5);
 
-            // MEMORY SAFETY SANITIZATION
             function escapeHTML(str) {
                 return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
             }
 
-            // OPTIMIZED INITIALIZATION
             document.addEventListener("DOMContentLoaded", () => {
                 initInterfaceRenderers();
                 setupEventBindings();
@@ -275,7 +280,6 @@
             });
 
             function initInterfaceRenderers() {
-                // RENDER TOP TRENDING SLIDER
                 const slider = document.getElementById("sliderRenderer");
                 slider.innerHTML = trendingList.map((item, idx) => `
                     <div class="slider-card" data-id="${item.id}">
@@ -287,7 +291,6 @@
                     </div>
                 `).join('');
 
-                // RENDER CORE DATA ENGINE MATRIX
                 renderMatrixVirtual(BACKEND_API_MOCK);
             }
 
@@ -302,7 +305,6 @@
                 }
                 infoKosong.style.display = "none";
 
-                // LIMIT CHUNK VIEWPORT FOR RAM PERFORMANCE SAFETY
                 const chunkData = dataList.slice(0, 12);
                 const fragment = document.createDocumentFragment();
 
@@ -327,7 +329,6 @@
                     fragment.appendChild(card);
                 });
 
-                // PERFORMANCE RAF CALL
                 requestAnimationFrame(() => {
                     container.appendChild(fragment);
                     if (dataList.length > 12) {
@@ -339,24 +340,19 @@
                 });
             }
 
-            // CENTRALIZED EVENT DELEGATION HACK (NO MEMORY LEAKS)
             function setupEventBindings() {
-                // Global Body Click Catch
                 document.body.addEventListener("click", (e) => {
-                    // Audio Playback Unlocker
                     const musik = document.getElementById("neonThemeMusic");
                     if (musik && musik.paused && !currentActiveId) {
                         musik.play().catch(() => {});
                     }
 
-                    // Card Selection Catch
                     const card = e.target.closest(".matrix-card, .slider-card");
                     if (card) {
                         bootstrapStreamEngine(parseInt(card.getAttribute("data-id"), 10));
                         return;
                     }
 
-                    // Server Route Switcher
                     const srvBtn = e.target.closest(".server-btn");
                     if (srvBtn) {
                         const targetSrv = parseInt(srvBtn.getAttribute("data-srv"), 10);
@@ -364,7 +360,6 @@
                     }
                 });
 
-                // Search Controller Debouncing Optimization
                 document.getElementById("searchInput").addEventListener("input", (e) => {
                     const keyword = e.target.value.toLowerCase().trim();
                     const filterData = BACKEND_API_MOCK.filter(x => x.title.toLowerCase().includes(keyword));
@@ -372,30 +367,51 @@
                     document.getElementById("sectionTitle").innerText = keyword ? `Hasil Golekan: "${keyword}"` : "Database Donghua Neon Premium";
                 });
 
-                // Placeholder Slider Click Play
                 document.getElementById("playerContainer").addEventListener("click", (e) => {
                     if (e.target.closest("#core-player")) {
                         bootstrapStreamEngine(trendingList[currentSlideIndex].id);
                     }
                 });
 
-                // Close Button Control
                 document.getElementById("closeTheaterBtn").addEventListener("click", shutdownPlayerEngine);
 
-                /* =======================================================
-                   THE MASTER HACK: PACK ROTATION MATRIX OVERRIDE ACTION
-                   =======================================================
+                /* =================================================================
+                   THE MASTER HACK VERSION 6: IMMERSIVE FULLSCREEN INJECTOR ENGINE
+                   =================================================================
                 */
                 document.getElementById("triggerLandscapeHack").addEventListener("click", () => {
                     const panel = document.getElementById("mainPlayerPanel");
+                    
                     if (panel.classList.contains("force-fullscreen")) {
+                        // METU TEKO MODE FULLSCREEN NATIVE BROWSER
+                        if (document.exitFullscreen) { document.exitFullscreen(); }
+                        else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+                        else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
+                        
                         panel.classList.remove("force-fullscreen");
                         document.getElementById("triggerLandscapeHack").innerText = "⚡ REKAYASA HORIZONTAL";
                     } else {
+                        // MASUK MODE FULLSCREEN NATIVE UNTUK NGILANGNO BAR URL & STATUS BAR HP
+                        const docEl = document.documentElement;
+                        if (docEl.requestFullscreen) { docEl.requestFullscreen(); }
+                        else if (docEl.webkitRequestFullscreen) { docEl.webkitRequestFullscreen(); }
+                        else if (docEl.mozRequestFullScreen) { docEl.mozRequestFullScreen(); }
+
                         panel.classList.add("force-fullscreen");
-                        document.getElementById("triggerLandscapeHack").innerText = "✕ NORMAL VERTIKAL";
+                        document.getElementById("triggerLandscapeHack").innerText = "✕ VERTIKAL";
                     }
                 });
+                
+                // Cek lek misal user metu fullscreen gawe tombol bawaan HP (Back Button)
+                const exitHandler = () => {
+                    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+                        document.getElementById("mainPlayerPanel").classList.remove("force-fullscreen");
+                        document.getElementById("triggerLandscapeHack").innerText = "⚡ REKAYASA HORIZONTAL";
+                    }
+                };
+                document.addEventListener('fullscreenchange', exitHandler);
+                document.addEventListener('webkitfullscreenchange', exitHandler);
+                document.addEventListener('mozfullscreenchange', exitHandler);
             }
 
             function startPlaceholderTicker() {
@@ -414,7 +430,6 @@
                 }, 5000);
             }
 
-            // CORE PIPELINE BOOTSTRAP ENGINE
             function bootstrapStreamEngine(id) {
                 const node = BACKEND_API_MOCK.find(x => x.id === id);
                 if (!node) return;
@@ -433,7 +448,6 @@
             }
 
             function injectIframeSecure(url) {
-                // FIXED SANDBOX SECURITY INTEGRITY ALLOW MAXIMUM FULLSCREEN ACCELERATOR
                 document.getElementById("playerContainer").innerHTML = `
                     <iframe src="${url}" 
                             width="100%" height="100%" 
@@ -480,7 +494,7 @@
             }
 
             function shutdownPlayerEngine() {
-                // CLEAN RECOVERY FORCE FULLSCREEN MOBILE IF CLOSED
+                if (document.exitFullscreen) { document.exitFullscreen().catch(()=>{}); }
                 document.getElementById("mainPlayerPanel").classList.remove("force-fullscreen");
                 document.getElementById("triggerLandscapeHack").innerText = "⚡ REKAYASA HORIZONTAL";
 
@@ -503,7 +517,7 @@
             function initTelemetrySim() {
                 setInterval(() => {
                     document.getElementById('userOnline').textContent = Math.floor(Math.random() * (620 - 480 + 1)) + 480;
-                    const logs = ["NODE_OK", "VIRTUAL_DOM_CLEAN", "CSS_ROTATION_READY", "RAM_GUARD_STABLE"];
+                    const logs = ["NODE_OK", "IMMERSIVE_CLEAN", "BAR_URL_HIDDEN", "RAM_GUARD_STABLE"];
                     document.getElementById('liveLogs').textContent = `[SYS] ${logs[Math.floor(Math.random() * logs.length)]} -> hash_${(Math.random() + 1).toString(36).substring(7).toUpperCase()}`;
                 }, 4000);
             }
